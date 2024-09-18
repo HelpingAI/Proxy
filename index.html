@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProxyHive - Bharat's Proxy Hub</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF9933;
+            --secondary-color: #138808;
+            --accent-color: #000080;
+            --background-color: #FFF5E6;
+            --text-color: #333;
+            --card-background: #FFF;
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%23FF9933" stroke-width="0.5" /></svg>');
+            background-size: 50px 50px;
+        }
+        .container {
+            padding-top: 50px;
+        }
+        .jumbotron {
+            background: linear-gradient(135deg, #FF9933, #FFFFFF, #138808);
+            color: #000080;
+            padding: 3rem 2rem;
+            margin-bottom: 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #000080;
+        }
+        .jumbotron::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M50 0 L100 50 L50 100 L0 50 Z" fill="none" stroke="%23000080" stroke-width="1" /></svg>') repeat;
+            opacity: 0.1;
+            animation: rotate 60s linear infinite;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h1.display-4 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            color: #000080;
+        }
+        .lead {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: #000080;
+        }
+        .card {
+            border: 3px solid #FF9933;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: var(--card-background);
+            margin-bottom: 20px;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #000080;
+            margin-bottom: 0.5rem;
+        }
+        .card-text {
+            color: var(--text-color);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .btn-primary {
+            background-color: #FF9933;
+            border-color: #FF9933;
+            color: #000080;
+            border-radius: 25px;
+            padding: 10px 25px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #138808;
+            border-color: #138808;
+            color: #FFF;
+            transform: translateY(-2px);
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-left: 20px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #000080;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        body.dark-mode {
+            --background-color: #1A1A2E;
+            --text-color: #E0E0E0;
+            --card-background: #16213E;
+            --card-shadow: 0 4px 20px rgba(255, 255, 255, 0.05);
+        }
+        body.dark-mode .jumbotron {
+            background: linear-gradient(135deg, #FF9933, #000000, #138808);
+            color: #FFF;
+        }
+        body.dark-mode .btn-primary {
+            background-color: #FF9933;
+            border-color: #FF9933;
+            color: #000080;
+        }
+        body.dark-mode .btn-primary:hover {
+            background-color: #138808;
+            border-color: #138808;
+            color: #FFF;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #lastUpdated {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4 mb-4">ProxyHive</h1>
+            <p class="lead">Your reliable source for fast and secure proxies.</p>
+            <div class="mt-4">
+                <label class="switch ml-3">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
+        <div id="proxiesContainer" class="row mt-4"></div>
+        <p id="lastUpdated"></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('darkModeToggle').addEventListener('change', function() {
+            document.body.classList.toggle('dark-mode', this.checked);
+            localStorage.setItem('darkMode', this.checked);
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
+            document.getElementById('darkModeToggle').checked = darkModeEnabled;
+            document.body.classList.toggle('dark-mode', darkModeEnabled);
+            fetchProxies();
+            setInterval(fetchProxies, 60000); // Refresh every 1 minute
+        });
+
+        function fetchProxies() {
+            fetch('https://abhaykoul-proxy2.hf.space/proxies', {
+                headers: {
+                    'accept': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const proxiesContainer = document.getElementById('proxiesContainer');
+                proxiesContainer.innerHTML = '';
+                data.proxies.forEach(proxy => {
+                    const proxyCard = document.createElement('div');
+                    proxyCard.className = 'col-md-4 mb-4 fade-in';
+                    proxyCard.innerHTML = `
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Proxy</h5>
+                                <p class="card-text">${proxy}</p>
+                                <button class="btn btn-primary btn-copy" data-proxy="${proxy}">
+                                    <i class="far fa-copy mr-2"></i>Copy
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    proxiesContainer.appendChild(proxyCard);
+                });
+                setupCopyButtons();
+                updateLastUpdated();
+            })
+            .catch(error => {
+                console.error('Error fetching proxies:', error);
+                document.getElementById('proxiesContainer').innerHTML = '<p class="col-12 text-center">Error fetching proxies. Please try again later.</p>';
+            });
+        }
+
+        function setupCopyButtons() {
+            document.querySelectorAll('.btn-copy').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const proxyText = this.getAttribute('data-proxy');
+                    copyToClipboard(proxyText, this);
+                });
+            });
+        }
+
+        function copyToClipboard(text, button) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.innerHTML;
+                button.textContent = 'Copied!';
+                button.disabled = true;
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                button.textContent = 'Copy failed';
+                setTimeout(() => {
+                    button.innerHTML = '<i class="far fa-copy mr-2"></i>Copy';
+                }, 2000);
+            });
+        }
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = `Last updated: ${now.toLocaleString()}`;
+        }
+    </script>
+</body>
+</html>
