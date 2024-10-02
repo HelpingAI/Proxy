@@ -194,6 +194,7 @@
         <div class="jumbotron">
             <h1 class="display-4 mb-4">ProxyHive</h1>
             <p class="lead">Your reliable source for fast and secure proxies.</p>
+            <button id="refreshButton" class="btn btn-primary">Refresh Proxies</button>
             <div class="mt-4">
                 <label class="switch ml-3">
                     <input type="checkbox" id="darkModeToggle">
@@ -209,30 +210,58 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
+        class ProxyManager {
+            constructor() {
+                this.proxies = [];
+                this.lastRefresh = 0;
+            }
+
+            async fetchProxies() {
+                try {
+                    const response = await fetch('https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all');
+                    const text = await response.text();
+                    return text.split('\r\n').filter(proxy => proxy);
+                } catch (e) {
+                    console.error("Error fetching proxies:", e);
+                    return [];
+                }
+            }
+
+            async refreshProxies() {
+                this.proxies = await this.fetchProxies();
+                this.lastRefresh = Date.now();
+                return this.proxies.length;
+            }
+
+            getProxy() {
+                if (this.proxies.length > 0) {
+                    return this.proxies[Math.floor(Math.random() * this.proxies.length)];
+                }
+                return null;
+            }
+        }
+
+        const proxyManager = new ProxyManager();
+
         document.getElementById('darkModeToggle').addEventListener('change', function() {
             document.body.classList.toggle('dark-mode', this.checked);
             localStorage.setItem('darkMode', this.checked);
         });
+
+        document.getElementById('refreshButton').addEventListener('click', fetchProxies);
 
         window.addEventListener('DOMContentLoaded', () => {
             const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
             document.getElementById('darkModeToggle').checked = darkModeEnabled;
             document.body.classList.toggle('dark-mode', darkModeEnabled);
             fetchProxies();
-            setInterval(fetchProxies, 60000); // Refresh every 1 minute
         });
 
         function fetchProxies() {
-            fetch('https://abhaykoul-proxy2.hf.space/proxies', {
-                headers: {
-                    'accept': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
+            proxyManager.refreshProxies().then(count => {
                 const proxiesContainer = document.getElementById('proxiesContainer');
                 proxiesContainer.innerHTML = '';
-                data.proxies.forEach(proxy => {
+                proxyManager.proxies.forEach(proxy => {
                     const proxyCard = document.createElement('div');
                     proxyCard.className = 'col-md-4 mb-4 fade-in';
                     proxyCard.innerHTML = `
@@ -250,8 +279,7 @@
                 });
                 setupCopyButtons();
                 updateLastUpdated();
-            })
-            .catch(error => {
+            }).catch(error => {
                 console.error('Error fetching proxies:', error);
                 document.getElementById('proxiesContainer').innerHTML = '<p class="col-12 text-center">Error fetching proxies. Please try again later.</p>';
             });
